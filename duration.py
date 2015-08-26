@@ -11,7 +11,7 @@ class Duration():
 
 
     def __init__(self, value):
-        self._milliseconds = value
+        self._milliseconds = int(value)
 
 
     def nanoseconds(self):
@@ -92,18 +92,28 @@ class Duration():
 
     
     def __add__(self, other):
+        if not instanceof(other, Duration):
+            raise Exception("only Durations can be added to durations")
         return Duration(int(self) + int(other))
 
+
     def __sub__(self, other):
+        if not instanceof(other, Duration):
+            raise Exception("only Durations can be subtracted from Durations")
         return Duration(int(self) - int(other))
 
 
     def __mul__(self, other):
+        if not instanceof(other, (int, long, float)):
+            raise Exception("Durations can only be multiplied by scalar values")
         return Duration(int(self) * int(other))
 
 
     def __div__(self, other):
-        return Duration(int(self) / int(other))
+        if instanceof(other, (int, long, float)):
+            return Duration(int(self) / int(other))
+        if instanceof(other, Duration):
+            return int(self) / int(other)
 
 
     def __neg__(self):
