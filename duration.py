@@ -139,7 +139,7 @@ def parse(duration):
         "w"  : _week_size
     }
 
-    if duration == "0" or duration == "+0" or duration == "-0":
+    if duration in ("0", "+0", "-0"):
         return Duration(0)
 
     pattern = re.compile('([\-\+\d\.]+)([a-z]+)')
