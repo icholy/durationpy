@@ -1,6 +1,6 @@
 # Duration.py
 
-This is a library for dealing with durations. 
+> This is a module for dealing with durations. 
 
 
 ### Parse
