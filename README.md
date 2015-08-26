@@ -14,15 +14,6 @@ This is a library for dealing with durations.
 
 ``` js
 var d = duration.parse("6w5d4h3m2s1ms");
-
-console.log(
-    d.milliseconds(), "\n", // => 4075382001
-    d.seconds(),      "\n", // => 4075382
-    d.minutes(),      "\n", // => 67923
-    d.hours(),        "\n", // => 1132
-    d.days(),         "\n", // => 47
-    d.weeks(),        "\n"  // => 6
-);
 ```
 
 ### Format
