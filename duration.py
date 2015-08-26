@@ -9,8 +9,6 @@ _millisecond_size = 1000 * _microsecond_size
 _second_size      = 1000 * _millisecond_size
 _minute_size      = 60   * _second_size
 _hour_size        = 60   * _minute_size
-_day_size         = 24   * _hour_size
-_week_size        = 7    * _day_size
 
 def to_str(delta):
 
@@ -62,9 +60,7 @@ def from_str(duration):
         "ms" : _millisecond_size,
         "s"  : _second_size,
         "m"  : _minute_size,
-        "h"  : _hour_size,
-        "d"  : _day_size,
-        "w"  : _week_size
+        "h"  : _hour_size
     }
 
     if duration in ("0", "+0", "-0"):
@@ -79,10 +75,14 @@ def from_str(duration):
         raise Exception("invalid duration")
 
     for (value, unit) in matches:
+        if unit not in units:
+            raise Exception(
+                "Unknown unit {} in duration {}".format(unit, duration))
         try:
             total += int(value) * units[unit]
         except:
-            raise Exception("invalid duration")
+            raise Exception(
+                "Invalid value {} in duration {}".format(value, duration))
 
     microseconds = total / _microsecond_size
     return datetime.timedelta(microseconds=sign * microseconds)
