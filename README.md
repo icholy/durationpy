@@ -14,7 +14,7 @@
 * `d` - day
 * `w` - week
 
-``` js
+``` py
 # parse
 td = duration.from_str("6w5d4h3m2s1ms");
 
