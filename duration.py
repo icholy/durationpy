@@ -1,10 +1,12 @@
+# -*- coding: UTF-8 -*-
+
 import re
 import datetime
 
 _nanosecond_size  = 1
 _microsecond_size = 1000 * _nanosecond_size
 _millisecond_size = 1000 * _microsecond_size
-_second_size      = 100  * _millisecond_size
+_second_size      = 1000 * _millisecond_size
 _minute_size      = 60   * _second_size
 _hour_size        = 60   * _minute_size
 _day_size         = 24   * _hour_size
@@ -39,7 +41,7 @@ def to_str(delta):
         nanoseconds -= _millisecond_size * milliseconds
         result_str += "{}ms".format(milliseconds)
 
-    microseconds = int(microseconds / _microsecond_size)
+    microseconds = int(nanoseconds / _microsecond_size)
     if microseconds:
         nanoseconds -= _microsecond_size * microseconds
         result_str += "{}us".format(microseconds)
