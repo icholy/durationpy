@@ -1,4 +1,3 @@
-import math
 import re
 
 _millisecond_size = 1.0
@@ -16,11 +15,11 @@ class Duration():
 
 
     def nanoseconds(self):
-        return self._milliseconds * 1000000.0
+        return int(self._milliseconds * 1000000)
 
 
     def microseconds(self):
-        return self._milliseconds * 1000.0
+        return int(self._milliseconds * 1000)
 
 
     def millisecond(self):
@@ -28,23 +27,23 @@ class Duration():
 
 
     def seconds(self):
-        return math.floor(self._milliseconds / _second_size)
+        return int(self._milliseconds / _second_size)
 
 
     def minutes(self):
-        return math.floor(self._milliseconds / _minute_size)
+        return int(self._milliseconds / _minute_size)
 
 
     def hours(self):
-        return math.floor(self._milliseconds / _hour_size)
+        return int(self._milliseconds / _hour_size)
 
 
     def days(self):
-        return math.floor(self._milliseconds / _day_size)
+        return int(self._milliseconds / _day_size)
 
 
     def weeks(self):
-        return math.floor(self._milliseconds / _week_size)
+        return int(self._milliseconds / _week_size)
 
 
     def __str__(self):
@@ -55,17 +54,17 @@ class Duration():
         if not milliseconds:
             return "0"
 
-        hours = math.floor(milliseconds / _hour_size)
+        hours = int(milliseconds / _hour_size)
         if hours:
             milliseconds -= _hour_size * hours
             result_str += "{}h".format(hours)
 
-        minutes = math.floor(milliseconds / _minute_size)
+        minutes = int(milliseconds / _minute_size)
         if minutes:
             milliseconds -= _minute_size * minutes
             result_str += "{}m".format(minutes)
 
-        seconds = math.floor(milliseconds / _second_size)
+        seconds = int(milliseconds / _second_size)
         if seconds:
             milliseconds -= _second_size * seconds
             result_str += "{}s".format(seconds)
