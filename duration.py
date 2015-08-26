@@ -1,4 +1,5 @@
 import re
+import datetime
 
 _millisecond_size = 1.0
 _second_size      = 100.0 * _millisecond_size
@@ -12,6 +13,10 @@ class Duration():
 
     def __init__(self, value):
         self._milliseconds = int(value)
+
+
+    def timedelta(self):
+        return datetime.timedelta(milliseconds=self._milliseconds)
 
 
     def nanoseconds(self):
