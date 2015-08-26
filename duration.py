@@ -56,21 +56,21 @@ class Duration():
             return "0"
 
         hours = math.floor(milliseconds / _hour_size)
-        if hours != 0:
+        if hours:
             milliseconds -= _hour_size * hours
             result_str += "{}h".format(hours)
 
         minutes = math.floor(milliseconds / _minute_size)
-        if minutes != 0:
+        if minutes:
             milliseconds -= _minute_size * minutes
             result_str += "{}m".format(minutes)
 
         seconds = math.floor(milliseconds / _second_size)
-        if seconds != 0:
+        if seconds:
             milliseconds -= _second_size * seconds
             result_str += "{}s".format(seconds)
 
-        if milliseconds != 0:
+        if milliseconds:
             result_str += "{}ms".format(milliseconds)
 
         return "{}{}".format(sign, result_str)
@@ -138,7 +138,7 @@ def parse(duration):
     sign = -1 if duration[0] == '-' else 1
     matches = pattern.findall(duration)
 
-    if len(matches) == 0:
+    if not len(matches):
         raise Exception("invalid duration")
 
     for (value, unit) in matches:
