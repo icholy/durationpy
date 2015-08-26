@@ -1,10 +1,12 @@
 # Duration.py
 
-> This is a module for dealing with durations. 
+> Module for converting between `datetime.timedelta` and Go's Duration strings.
 
 
 ### Parse
 
+* `ns` - nanoseconds
+* `us` - microseconds
 * `ms` - millisecond
 * `s` - second
 * `m` - minute
@@ -13,26 +15,9 @@
 * `w` - week
 
 ``` js
-var d = duration.parse("6w5d4h3m2s1ms");
-```
+# parse
+td = duration.from_str("6w5d4h3m2s1ms");
 
-### Format
-``` js
-print("str: {} ms: {}".format(duration.hour, int(duration.hour)))
-# "str: 1h ms: 3600000"
-```
-
-### Basic Operations
-``` js
-// Addition
-d1 = duration.parse("6d")
-d2 = d1 + duration.day
-print(d2) # "168h"
-
-// Multiplication
-d3 = duration.parse("5m"),
-d4 = d3 * 12
-print(d4) # "1h"
-
-// etc ...
+# format
+duration.to_str(td)
 ```

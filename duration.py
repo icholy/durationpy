@@ -1,141 +1,62 @@
 import re
 import datetime
 
-_millisecond_size = 1.0
-_second_size      = 100.0 * _millisecond_size
-_minute_size      = 60.0  * _second_size
-_hour_size        = 60.0  * _minute_size
-_day_size         = 24.0  * _hour_size
-_week_size        = 7.0   * _day_size
+_nanosecond_size  = 1
+_microsecond_size = 1000 * _nanosecond_size
+_millisecond_size = 1000 * _microsecond_size
+_second_size      = 100  * _millisecond_size
+_minute_size      = 60   * _second_size
+_hour_size        = 60   * _minute_size
+_day_size         = 24   * _hour_size
+_week_size        = 7    * _day_size
 
-class Duration():
+def to_str(delta):
 
+    result_str = ""
+    nanoseconds = abs(delta.total_seconds() * _second_size)
+    sign = "-" if delta.total_seconds() < 0 else ""
 
-    def __init__(self, value):
-        self._milliseconds = int(value)
+    if not nanoseconds:
+        return "0"
 
+    hours = int(nanoseconds / _hour_size)
+    if hours:
+        nanoseconds -= _hour_size * hours
+        result_str += "{}h".format(hours)
 
-    def timedelta(self):
-        return datetime.timedelta(milliseconds=self._milliseconds)
+    minutes = int(nanoseconds / _minute_size)
+    if minutes:
+        nanoseconds -= _minute_size * minutes
+        result_str += "{}m".format(minutes)
 
+    seconds = int(nanoseconds / _second_size)
+    if seconds:
+        nanoseconds -= _second_size * seconds
+        result_str += "{}s".format(seconds)
 
-    def nanoseconds(self):
-        return int(self._milliseconds * 1000000)
+    milliseconds = int(nanoseconds / _millisecond_size)
+    if milliseconds:
+        nanoseconds -= _millisecond_size * milliseconds
+        result_str += "{}ms".format(milliseconds)
 
+    microseconds = int(microseconds / _microsecond_size)
+    if microseconds:
+        nanoseconds -= _microsecond_size * microseconds
+        result_str += "{}us".format(microseconds)
 
-    def microseconds(self):
-        return int(self._milliseconds * 1000)
+    if nanoseconds:
+        result_str += "{}ns".format(nanoseconds)
 
-
-    def millisecond(self):
-        return self._milliseconds
-
-
-    def seconds(self):
-        return int(self._milliseconds / _second_size)
-
-
-    def minutes(self):
-        return int(self._milliseconds / _minute_size)
-
-
-    def hours(self):
-        return int(self._milliseconds / _hour_size)
-
-
-    def days(self):
-        return int(self._milliseconds / _day_size)
-
-
-    def weeks(self):
-        return int(self._milliseconds / _week_size)
-
-
-    def __str__(self):
-        result_str = ""
-        milliseconds = abs(self._milliseconds)
-        sign = "-" if self._milliseconds < 0 else ""
-
-        if not milliseconds:
-            return "0"
-
-        hours = int(milliseconds / _hour_size)
-        if hours:
-            milliseconds -= _hour_size * hours
-            result_str += "{}h".format(hours)
-
-        minutes = int(milliseconds / _minute_size)
-        if minutes:
-            milliseconds -= _minute_size * minutes
-            result_str += "{}m".format(minutes)
-
-        seconds = int(milliseconds / _second_size)
-        if seconds:
-            milliseconds -= _second_size * seconds
-            result_str += "{}s".format(seconds)
-
-        if milliseconds:
-            result_str += "{}ms".format(milliseconds)
-
-        return "{}{}".format(sign, result_str)
+    return "{}{}".format(sign, result_str)
 
 
-    def __repr__(self):
-        return "Duration({})".format(self.__str__())
-
-
-    def __int__(self):
-        return int(self._milliseconds)
-
-
-    def __float__(self):
-        return float(self._milliseconds)
-
-    
-    def __long__(self):
-        return long(self._milliseconds)
-
-    
-    def __add__(self, other):
-        if not instanceof(other, Duration):
-            raise Exception("only Durations can be added to durations")
-        return Duration(int(self) + int(other))
-
-
-    def __sub__(self, other):
-        if not instanceof(other, Duration):
-            raise Exception("only Durations can be subtracted from Durations")
-        return Duration(int(self) - int(other))
-
-
-    def __mul__(self, other):
-        if not instanceof(other, (int, long, float)):
-            raise Exception("Durations can only be multiplied by scalar values")
-        return Duration(int(self) * int(other))
-
-
-    def __div__(self, other):
-        if instanceof(other, (int, long, float)):
-            return Duration(int(self) / int(other))
-        if instanceof(other, Duration):
-            return int(self) / int(other)
-
-
-    def __neg__(self):
-        return Duration(-int(self))
-
-
-    def __pos__(self):
-        return Duration(int(self))
-
-
-    def __abs__(self):
-        return Duration(abs(int(self)))
-
-
-def parse(duration):
+def from_str(duration):
 
     units = {
+        "ns" : _nanosecond_size,
+        "us" : _microsecond_size,
+        "µs" : _microsecond_size,
+        "μs" : _microsecond_size,
         "ms" : _millisecond_size,
         "s"  : _second_size,
         "m"  : _minute_size,
@@ -145,7 +66,7 @@ def parse(duration):
     }
 
     if duration in ("0", "+0", "-0"):
-        return Duration(0)
+        return datetime.timedelta()
 
     pattern = re.compile('([\-\+\d\.]+)([a-z]+)')
     total = 0
@@ -161,12 +82,6 @@ def parse(duration):
         except:
             raise Exception("invalid duration")
 
-    return Duration(sign * total)
+    microseconds = total / _microsecond_size
+    return datetime.timedelta(microseconds=sign * microseconds)
 
-
-millisecond = Duration(_millisecond_size)
-second      = Duration(_second_size)
-minute      = Duration(_minute_size)
-hour        = Duration(_hour_size)
-day         = Duration(_day_size)
-week        = Duration(_week_size)
