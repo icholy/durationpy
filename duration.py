@@ -86,7 +86,7 @@ def from_str(duration):
     if duration in ("0", "+0", "-0"):
         return datetime.timedelta()
 
-    pattern = re.compile('([\-\+\d\.]+)([a-z]+)')
+    pattern = re.compile('([\-\+\d\.]+)([a-zµμ]+)')
     total = 0
     sign = -1 if duration[0] == '-' else 1
     matches = pattern.findall(duration)
