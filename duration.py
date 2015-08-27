@@ -55,19 +55,19 @@ def to_str(delta):
 
     total_seconds = delta.total_seconds()
     sign = "-" if total_seconds < 0 else ""
+    nanoseconds = abs(total_seconds * _second_size)
 
     if total_seconds < 1:
-        result_str = _to_str_small(abs(total_seconds))
+        result_str = _to_str_small(nanoseconds)
     else:
-        result_str = _to_str_large(abs(total_seconds))
+        result_str = _to_str_large(nanoseconds)
 
     return "{}{}".format(sign, result_str)
 
 
-def _to_str_small(total_seconds):
+def _to_str_small(nanoseconds):
 
     result_str = ""
-    nanoseconds = total_seconds * _second_size
 
     if not nanoseconds:
         return "0"
@@ -88,10 +88,9 @@ def _to_str_small(total_seconds):
     return result_str
 
 
-def _to_str_large(total_seconds):
+def _to_str_large(nanoseconds):
 
     result_str = ""
-    nanoseconds = total_seconds * _second_size
 
     hours = int(nanoseconds / _hour_size)
     if hours:
