@@ -10,6 +10,17 @@ _second_size      = 1000 * _millisecond_size
 _minute_size      = 60   * _second_size
 _hour_size        = 60   * _minute_size
 
+units = {
+    "ns" : _nanosecond_size,
+    "us" : _microsecond_size,
+    "µs" : _microsecond_size,
+    "μs" : _microsecond_size,
+    "ms" : _millisecond_size,
+    "s"  : _second_size,
+    "m"  : _minute_size,
+    "h"  : _hour_size
+}
+
 def _to_str_small(total_seconds):
 
     result_str = ""
@@ -71,17 +82,6 @@ def to_str(delta):
 
 
 def from_str(duration):
-
-    units = {
-        "ns" : _nanosecond_size,
-        "us" : _microsecond_size,
-        "µs" : _microsecond_size,
-        "μs" : _microsecond_size,
-        "ms" : _millisecond_size,
-        "s"  : _second_size,
-        "m"  : _minute_size,
-        "h"  : _hour_size
-    }
 
     if duration in ("0", "+0", "-0"):
         return datetime.timedelta()
