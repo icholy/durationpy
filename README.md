@@ -11,12 +11,10 @@
 * `s` - second
 * `m` - minute
 * `h` - hour
-* `d` - day
-* `w` - week
 
 ``` py
 # parse
-td = duration.from_str("6w5d4h3m2s1ms");
+td = duration.from_str("4h3m2s1ms");
 
 # format
 duration.to_str(td)
