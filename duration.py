@@ -92,7 +92,7 @@ def from_str(duration):
     matches = pattern.findall(duration)
 
     if not len(matches):
-        raise Exception("invalid duration")
+        raise Exception("Invalid duration {}".format(duration))
 
     for (value, unit) in matches:
         if unit not in units:
