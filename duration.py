@@ -10,7 +10,7 @@ _second_size      = 1000 * _millisecond_size
 _minute_size      = 60   * _second_size
 _hour_size        = 60   * _minute_size
 
-def _to_str_small(total_seconds, sign):
+def _to_str_small(total_seconds):
 
     result_str = ""
     nanoseconds = total_seconds * _second_size
@@ -31,10 +31,10 @@ def _to_str_small(total_seconds, sign):
     if nanoseconds:
         result_str += "{}ns".format(nanoseconds)
 
-    return "{}{}".format(sign, result_str)
+    return result_str
 
 
-def _to_str_large(total_seconds, sign):
+def _to_str_large(total_seconds):
 
     result_str = ""
     nanoseconds = total_seconds * _second_size
@@ -54,7 +54,7 @@ def _to_str_large(total_seconds, sign):
         nanoseconds -= _second_size * seconds
         result_str += "{}s".format(seconds)
 
-    return "{}{}".format(sign, result_str)
+    return result_str
 
 
 def to_str(delta):
@@ -63,9 +63,11 @@ def to_str(delta):
     sign = "-" if total_seconds < 0 else ""
 
     if total_seconds < 1:
-        return _to_str_small(abs(total_seconds), sign)
+        result_str = _to_str_small(abs(total_seconds))
     else:
-        return _to_str_large(abs(total_seconds), sign)
+        result_str = _to_str_large(abs(total_seconds))
+
+    return "{}{}".format(sign, result_str)
 
 
 def from_str(duration):
