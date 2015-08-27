@@ -19,3 +19,5 @@ td = duration.from_str("4h3m2s1ms");
 # format
 duration.to_str(td)
 ```
+
+**Note:** nanosecond precision is lost because `datetime.timedelta` uses microsecond resolution.
