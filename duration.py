@@ -99,7 +99,7 @@ def from_str(duration):
             raise Exception(
                 "Unknown unit {} in duration {}".format(unit, duration))
         try:
-            total += int(value) * units[unit]
+            total += float(value) * units[unit]
         except:
             raise Exception(
                 "Invalid value {} in duration {}".format(value, duration))
