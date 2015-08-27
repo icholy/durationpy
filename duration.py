@@ -21,6 +21,49 @@ units = {
     "h"  : _hour_size
 }
 
+
+def from_str(duration):
+    """Parse a duration string to a datetime.timedelta"""
+
+    if duration in ("0", "+0", "-0"):
+        return datetime.timedelta()
+
+    pattern = re.compile('([\-\+\d\.]+)([a-zµμ]+)')
+    total = 0
+    sign = -1 if duration[0] == '-' else 1
+    matches = pattern.findall(duration)
+
+    if not len(matches):
+        raise Exception("Invalid duration {}".format(duration))
+
+    for (value, unit) in matches:
+        if unit not in units:
+            raise Exception(
+                "Unknown unit {} in duration {}".format(unit, duration))
+        try:
+            total += float(value) * units[unit]
+        except:
+            raise Exception(
+                "Invalid value {} in duration {}".format(value, duration))
+
+    microseconds = total / _microsecond_size
+    return datetime.timedelta(microseconds=sign * microseconds)
+
+
+def to_str(delta):
+    """Format a datetime.timedelta to a duration string"""
+
+    total_seconds = delta.total_seconds()
+    sign = "-" if total_seconds < 0 else ""
+
+    if total_seconds < 1:
+        result_str = _to_str_small(abs(total_seconds))
+    else:
+        result_str = _to_str_large(abs(total_seconds))
+
+    return "{}{}".format(sign, result_str)
+
+
 def _to_str_small(total_seconds):
 
     result_str = ""
@@ -67,43 +110,4 @@ def _to_str_large(total_seconds):
 
     return result_str
 
-
-def to_str(delta):
-
-    total_seconds = delta.total_seconds()
-    sign = "-" if total_seconds < 0 else ""
-
-    if total_seconds < 1:
-        result_str = _to_str_small(abs(total_seconds))
-    else:
-        result_str = _to_str_large(abs(total_seconds))
-
-    return "{}{}".format(sign, result_str)
-
-
-def from_str(duration):
-
-    if duration in ("0", "+0", "-0"):
-        return datetime.timedelta()
-
-    pattern = re.compile('([\-\+\d\.]+)([a-zµμ]+)')
-    total = 0
-    sign = -1 if duration[0] == '-' else 1
-    matches = pattern.findall(duration)
-
-    if not len(matches):
-        raise Exception("Invalid duration {}".format(duration))
-
-    for (value, unit) in matches:
-        if unit not in units:
-            raise Exception(
-                "Unknown unit {} in duration {}".format(unit, duration))
-        try:
-            total += float(value) * units[unit]
-        except:
-            raise Exception(
-                "Invalid value {} in duration {}".format(value, duration))
-
-    microseconds = total / _microsecond_size
-    return datetime.timedelta(microseconds=sign * microseconds)
 
