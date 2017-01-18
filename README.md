@@ -2,6 +2,12 @@
 
 > Module for converting between `datetime.timedelta` and Go's Duration strings.
 
+### Install
+
+``` sh
+$ pip install durationpy
+```
+
 
 ### Parse
 
@@ -14,10 +20,10 @@
 
 ``` py
 # parse
-td = duration.from_str("4h3m2s1ms");
+td = durationpy.from_str("4h3m2s1ms");
 
 # format
-duration.to_str(td)
+durationpy.to_str(td)
 ```
 
 **Note:** nanosecond precision is lost because `datetime.timedelta` uses microsecond resolution.
