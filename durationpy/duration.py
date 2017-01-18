@@ -83,15 +83,15 @@ def _to_str_small(nanoseconds):
     milliseconds = int(nanoseconds / _millisecond_size)
     if milliseconds:
         nanoseconds -= _millisecond_size * milliseconds
-        result_str += "{}ms".format(milliseconds)
+        result_str += "{:g}ms".format(milliseconds)
 
     microseconds = int(nanoseconds / _microsecond_size)
     if microseconds:
         nanoseconds -= _microsecond_size * microseconds
-        result_str += "{}us".format(microseconds)
+        result_str += "{:g}us".format(microseconds)
 
     if nanoseconds:
-        result_str += "{}ns".format(nanoseconds)
+        result_str += "{:g}ns".format(nanoseconds)
 
     return result_str
 
@@ -103,17 +103,17 @@ def _to_str_large(nanoseconds):
     hours = int(nanoseconds / _hour_size)
     if hours:
         nanoseconds -= _hour_size * hours
-        result_str += "{}h".format(hours)
+        result_str += "{:g}h".format(hours)
 
     minutes = int(nanoseconds / _minute_size)
     if minutes:
         nanoseconds -= _minute_size * minutes
-        result_str += "{}m".format(minutes)
+        result_str += "{:g}m".format(minutes)
 
     seconds = float(nanoseconds) / float(_second_size)
     if seconds:
         nanoseconds -= _second_size * seconds
-        result_str += "{}s".format(seconds)
+        result_str += "{:g}s".format(seconds)
 
     return result_str
 
