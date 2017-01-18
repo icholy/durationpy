@@ -1,7 +1,7 @@
 
 import unittest
 import durationpy
-import ipdb
+from datetime import timedelta
 
 millisecond = 1
 second      = 1000 * millisecond
@@ -9,6 +9,8 @@ minute      = 60   * second
 hour        = 60   * minute
 day         = 24   * hour
 week        = 7    * day
+month       = 30   * day
+year        = 365  * day
 
 cases = [
 
@@ -61,8 +63,10 @@ cases = [
   [".", False, 0],
   ["-.", False, 0],
   [".s", False, 0],
-  ["+.s", False, 0]
-
+  ["+.s", False, 0],
+ 
+  # extended
+  ["5y2mm", True, 5*year + 2*month]
 ]
 
 class DurationTest(unittest.TestCase):
@@ -80,7 +84,6 @@ class DurationTest(unittest.TestCase):
             if not passes:
                 with self.assertRaises(Exception):
                     durationpy.from_str(input)
-                
 
 if __name__ == '__main__':
     unittest.main()

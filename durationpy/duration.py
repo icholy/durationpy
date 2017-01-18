@@ -11,6 +11,8 @@ _minute_size      = 60   * _second_size
 _hour_size        = 60   * _minute_size
 _day_size         = 24   * _hour_size
 _week_size        = 7    * _day_size
+_month_size       = 30   * _day_size
+_year_size        = 365  * _day_size
 
 units = {
     "ns": _nanosecond_size,
@@ -22,7 +24,9 @@ units = {
     "m":  _minute_size,
     "h":  _hour_size,
     "d":  _day_size,
-    "w":  _week_size
+    "w":  _week_size,
+    "mm": _month_size,
+    "y":  _year_size,
 }
 
 
