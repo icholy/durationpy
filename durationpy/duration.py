@@ -9,16 +9,20 @@ _millisecond_size = 1000 * _microsecond_size
 _second_size      = 1000 * _millisecond_size
 _minute_size      = 60   * _second_size
 _hour_size        = 60   * _minute_size
+_day_size         = 24   * _hour_size
+_week_size        = 7    * _day_size
 
 units = {
-    "ns" : _nanosecond_size,
-    "us" : _microsecond_size,
-    "µs" : _microsecond_size,
-    "μs" : _microsecond_size,
-    "ms" : _millisecond_size,
-    "s"  : _second_size,
-    "m"  : _minute_size,
-    "h"  : _hour_size
+    "ns": _nanosecond_size,
+    "us": _microsecond_size,
+    "µs": _microsecond_size,
+    "μs": _microsecond_size,
+    "ms": _millisecond_size,
+    "s":  _second_size,
+    "m":  _minute_size,
+    "h":  _hour_size,
+    "d":  _day_size,
+    "w":  _week_size
 }
 
 
@@ -28,7 +32,7 @@ def from_str(duration):
     if duration in ("0", "+0", "-0"):
         return datetime.timedelta()
 
-    pattern = re.compile('([\-\+\d\.]+)([a-zµμ]+)')
+    pattern = re.compile('([\d\.]+)([a-zµμ]+)')
     total = 0
     sign = -1 if duration[0] == '-' else 1
     matches = pattern.findall(duration)
