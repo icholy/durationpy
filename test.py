@@ -64,9 +64,11 @@ cases = [
   ["-.", False, 0],
   [".s", False, 0],
   ["+.s", False, 0],
- 
+
   # extended
-  ["5y2mm", True, 5*year + 2*month]
+  ["5y2mm", True, 5*year + 2*month],
+  ["7d", True, 7*day],
+  ["1y4w1h", True, 1*year + 4*week + 1*hour]
 ]
 
 class DurationTest(unittest.TestCase):
