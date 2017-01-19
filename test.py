@@ -71,19 +71,26 @@ cases = [
 
 class DurationTest(unittest.TestCase):
 
-    def test_good_input(self):
+    def test_parser(self):
         for [input, passes, expected] in cases:
             if passes:
                 actual = durationpy.from_str(input).total_seconds() * 1000
                 self.assertEquals(
                     expected, actual,
                     "{}, expecting {}, got {}".format(input, expected, actual)) 
-
-    def test_bad_input(self):
-        for [input, passes, expected] in cases:
-            if not passes:
+            else:
                 with self.assertRaises(Exception):
                     durationpy.from_str(input)
+
+    def test_formatter(self):
+        for [input, passes, expected] in cases:
+            if passes:
+                dt = durationpy.from_str(input)
+                ds = durationpy.to_str(dt)
+                actual = durationpy.from_str(ds).total_seconds() * 1000
+                self.assertEquals(
+                    expected, actual,
+                    "{}, expecting {}, got {}".format(input, expected, actual)) 
 
 if __name__ == '__main__':
     unittest.main()
