@@ -1,4 +1,4 @@
-# Duration.py
+# durationpy
 
 > Module for converting between `datetime.timedelta` and Go's Duration strings.
 
