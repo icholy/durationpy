@@ -109,12 +109,12 @@ def _to_str_large(nanoseconds, extended):
         months = int(nanoseconds / _month_size)
         if months:
             nanoseconds -= _month_size * months
-            result_str += "{:g}mm"
+            result_str += "{:g}mm".format(months)
 
         days = int(nanoseconds / _day_size)
         if days:
             nanoseconds -= _day_size * days
-            result_str += "{:g}d"
+            result_str += "{:g}d".format(days)
 
     hours = int(nanoseconds / _hour_size)
     if hours:
