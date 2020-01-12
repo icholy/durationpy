@@ -20,7 +20,7 @@ $ pip install durationpy
 
 ``` py
 # parse
-td = durationpy.from_str("4h3m2s1ms");
+td = durationpy.from_str("4h3m2s1ms")
 
 # format
 durationpy.to_str(td)
