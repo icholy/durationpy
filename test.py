@@ -77,11 +77,11 @@ class DurationTest(unittest.TestCase):
         for [input, passes, expected] in cases:
             if passes:
                 actual = durationpy.from_str(input).total_seconds() * 1000
-                self.assertEquals(
+                self.assertEqual(
                     expected, actual,
                     "{}, expecting {}, got {}".format(input, expected, actual)) 
             else:
-                with self.assertRaises(Exception):
+                with self.assertRaises(durationpy.DurationError):
                     durationpy.from_str(input)
 
     def test_formatter(self):
@@ -90,10 +90,9 @@ class DurationTest(unittest.TestCase):
                 dt = durationpy.from_str(input)
                 ds = durationpy.to_str(dt)
                 actual = durationpy.from_str(ds).total_seconds() * 1000
-                self.assertEquals(
+                self.assertEqual(
                     expected, actual,
                     "{}, expecting {}, got {}".format(input, expected, actual)) 
 
 if __name__ == '__main__':
     unittest.main()
-
