@@ -68,7 +68,8 @@ cases = [
   # extended
   ["5y2mm", True, 5*year + 2*month],
   ["7d", True, 7*day],
-  ["1y4w1h", True, 1*year + 4*week + 1*hour]
+  ["1y4w1h", True, 1*year + 4*week + 1*hour],
+  ["-7d", True, -7*day]
 ]
 
 class DurationTest(unittest.TestCase):
