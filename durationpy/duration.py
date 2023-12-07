@@ -29,6 +29,8 @@ units = {
     "y":  _year_size,
 }
 
+_duration_re = re.compile(r'([\d\.]+)([a-zµμ]+)')
+
 
 class DurationError(ValueError):
     """duration error"""
@@ -40,15 +42,21 @@ def from_str(duration):
     if duration in ("0", "+0", "-0"):
         return datetime.timedelta()
 
-    pattern = re.compile(r'([\d\.]+)([a-zµμ]+)')
-    matches = pattern.findall(duration)
-    if not len(matches):
+    sign = 1
+    if duration and duration[0] in '+-':
+        if duration[0] == '-':
+            sign = -1
+        duration = duration[1:]
+
+    matches = list(_duration_re.finditer(duration))
+    if not matches:
         raise DurationError("Invalid duration {}".format(duration))
+    if matches[0].start() != 0 or matches[-1].end() != len(duration):
+        raise DurationError('Extra characters at start or end of string')
 
     total = 0
-    sign = -1 if duration[0] == '-' else 1
-
-    for (value, unit) in matches:
+    for match in matches:
+        value, unit = match.groups()
         if unit not in units:
             raise DurationError(
                 "Unknown unit {} in duration {}".format(unit, duration))

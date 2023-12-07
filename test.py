@@ -64,6 +64,11 @@ cases = [
   ["-.", False, 0],
   [".s", False, 0],
   ["+.s", False, 0],
+  ["X3h", False, 0],
+  ["3hY", False, 0],
+  ["X72h3m0.5msY", False, 0],
+  ["+X3h", False, 0],
+  ["-X3h", False, 0],
 
   # extended
   ["5y2mm", True, 5*year + 2*month],
@@ -82,7 +87,7 @@ class DurationTest(unittest.TestCase):
                     expected, actual,
                     "{}, expecting {}, got {}".format(input, expected, actual)) 
             else:
-                with self.assertRaises(durationpy.DurationError):
+                with self.assertRaises(durationpy.DurationError, msg=repr(input)):
                     durationpy.from_str(input)
 
     def test_formatter(self):
