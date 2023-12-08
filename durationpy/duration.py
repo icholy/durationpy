@@ -39,6 +39,8 @@ class DurationError(ValueError):
 def from_str(duration):
     """Parse a duration string to a datetime.timedelta"""
 
+    original = duration
+
     if duration in ("0", "+0", "-0"):
         return datetime.timedelta()
 
@@ -50,21 +52,22 @@ def from_str(duration):
 
     matches = list(_duration_re.finditer(duration))
     if not matches:
-        raise DurationError("Invalid duration {}".format(duration))
+        raise DurationError("Invalid duration {}".format(original))
     if matches[0].start() != 0 or matches[-1].end() != len(duration):
-        raise DurationError('Extra characters at start or end of string')
+        raise DurationError(
+            'Extra chars at start or end of duration {}'.format(original))
 
     total = 0
     for match in matches:
         value, unit = match.groups()
         if unit not in units:
             raise DurationError(
-                "Unknown unit {} in duration {}".format(unit, duration))
+                "Unknown unit {} in duration {}".format(unit, original))
         try:
             total += float(value) * units[unit]
         except Exception:
             raise DurationError(
-                "Invalid value {} in duration {}".format(value, duration))
+                "Invalid value {} in duration {}".format(value, original))
 
     microseconds = total / _microsecond_size
     return datetime.timedelta(microseconds=sign * microseconds)
