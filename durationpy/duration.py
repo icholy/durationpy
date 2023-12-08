@@ -29,6 +29,8 @@ units = {
     "y":  _year_size,
 }
 
+_duration_re = re.compile(r'([\d\.]+)([a-zµμ]+)')
+
 
 class DurationError(ValueError):
     """duration error"""
@@ -37,26 +39,35 @@ class DurationError(ValueError):
 def from_str(duration):
     """Parse a duration string to a datetime.timedelta"""
 
+    original = duration
+
     if duration in ("0", "+0", "-0"):
         return datetime.timedelta()
 
-    pattern = re.compile(r'([\d\.]+)([a-zµμ]+)')
-    matches = pattern.findall(duration)
-    if not len(matches):
-        raise DurationError("Invalid duration {}".format(duration))
+    sign = 1
+    if duration and duration[0] in '+-':
+        if duration[0] == '-':
+            sign = -1
+        duration = duration[1:]
+
+    matches = list(_duration_re.finditer(duration))
+    if not matches:
+        raise DurationError("Invalid duration {}".format(original))
+    if matches[0].start() != 0 or matches[-1].end() != len(duration):
+        raise DurationError(
+            'Extra chars at start or end of duration {}'.format(original))
 
     total = 0
-    sign = -1 if duration[0] == '-' else 1
-
-    for (value, unit) in matches:
+    for match in matches:
+        value, unit = match.groups()
         if unit not in units:
             raise DurationError(
-                "Unknown unit {} in duration {}".format(unit, duration))
+                "Unknown unit {} in duration {}".format(unit, original))
         try:
             total += float(value) * units[unit]
         except Exception:
             raise DurationError(
-                "Invalid value {} in duration {}".format(value, duration))
+                "Invalid value {} in duration {}".format(value, original))
 
     microseconds = total / _microsecond_size
     return datetime.timedelta(microseconds=sign * microseconds)
