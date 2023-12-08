@@ -82,8 +82,9 @@ class DurationTest(unittest.TestCase):
                     expected, actual,
                     "{}, expecting {}, got {}".format(input, expected, actual)) 
             else:
-                with self.assertRaises(durationpy.DurationError):
+                with self.assertRaises(durationpy.DurationError) as context:
                     durationpy.from_str(input)
+                self.assertIn(input, str(context.exception), msg="error did not contain input")
 
     def test_formatter(self):
         for [input, passes, expected] in cases:
