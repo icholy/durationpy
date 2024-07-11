@@ -90,6 +90,7 @@ def to_str(delta, extended=False):
 def _to_str_small(nanoseconds, extended):
 
     result_str = ""
+    nanoseconds = round(nanoseconds, 0)
 
     if not nanoseconds:
         return "0"
