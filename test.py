@@ -54,6 +54,10 @@ cases = [
   
   # large value
   ["52763797000ms", True, 52763797000 * millisecond],
+
+  # small value
+  # Use multiplication to preserve rounding errors
+  ["492us", True, timedelta(microseconds=492).total_seconds() * 1000],
   
   # errors
   ["", False, 0],

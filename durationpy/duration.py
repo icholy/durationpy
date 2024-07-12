@@ -77,7 +77,7 @@ def to_str(delta, extended=False):
 
     total_seconds = delta.total_seconds()
     sign = "-" if total_seconds < 0 else ""
-    nanoseconds = abs(total_seconds * _second_size)
+    nanoseconds = round(abs(total_seconds * _second_size), 0)
 
     if abs(total_seconds) < 1:
         result_str = _to_str_small(nanoseconds, extended)
