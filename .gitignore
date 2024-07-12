@@ -2,3 +2,4 @@
 /dist/
 MANIFEST
 .python-version
+/durationpy.egg-info
