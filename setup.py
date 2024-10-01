@@ -6,8 +6,8 @@ setup(
     url          = 'https://github.com/icholy/durationpy',
     author       = 'Ilia Choly',
     author_email = 'ilia.choly@gmail.com',
-    download_url = 'https://github.com/icholy/durationpy/tarball/0.7',
-    version      = '0.7',
+    download_url = 'https://github.com/icholy/durationpy/tarball/0.8',
+    version      = '0.8',
     packages     = ['durationpy'],
     license      = 'MIT'
 )
