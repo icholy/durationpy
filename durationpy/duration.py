@@ -36,7 +36,7 @@ class DurationError(ValueError):
     """duration error"""
 
 
-def from_str(duration):
+def from_str(duration: str) -> datetime.timedelta:
     """Parse a duration string to a datetime.timedelta"""
 
     original = duration
@@ -72,7 +72,7 @@ def from_str(duration):
     microseconds = total / _microsecond_size
     return datetime.timedelta(microseconds=sign * microseconds)
 
-def to_str(delta, extended=False):
+def to_str(delta: datetime.timedelta, extended: bool = False) -> str:
     """Format a datetime.timedelta to a duration string"""
 
     total_seconds = delta.total_seconds()
