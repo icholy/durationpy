@@ -10,5 +10,5 @@ setup(
     version      = '0.9',
     packages     = ['durationpy'],
     license      = 'MIT',
-    package_data = {'durationpy': ['py.typed', '*.pyi']},
+    package_data = {'durationpy': ['py.typed', '*.pyi']}
 )
