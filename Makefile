@@ -1,5 +1,5 @@
 build: clean
-	python setup.py sdist bdist_wheel
+	python3 setup.py sdist bdist_wheel
 
 clean:
 	rm -rf build dist *.egg-info
