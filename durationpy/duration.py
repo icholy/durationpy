@@ -149,9 +149,18 @@ def _to_str_large(nanoseconds, extended):
         nanoseconds -= _minute_size * minutes
         result_str += "{:g}m".format(minutes)
 
-    seconds = float(nanoseconds) / float(_second_size)
-    if seconds:
-        nanoseconds -= _second_size * seconds
-        result_str += "{:g}s".format(seconds)
+    whole_seconds = int(nanoseconds // _second_size)
+    fractional_nanoseconds = int(nanoseconds - _second_size * whole_seconds)
+    if whole_seconds or fractional_nanoseconds:
+        if fractional_nanoseconds:
+            # Render the fractional part from the exact nanosecond
+            # remainder instead of formatting a float with "%g", which
+            # only keeps 6 significant digits and silently drops
+            # precision once the whole-second part has two or more
+            # digits (e.g. "54.709570s" would come out as "54.7096s").
+            fraction = "{:09d}".format(fractional_nanoseconds).rstrip("0")
+            result_str += "{}.{}s".format(whole_seconds, fraction)
+        else:
+            result_str += "{}s".format(whole_seconds)
 
     return result_str

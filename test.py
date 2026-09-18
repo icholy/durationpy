@@ -108,7 +108,35 @@ class DurationTest(unittest.TestCase):
                 actual = durationpy.from_str(ds).total_seconds() * 1000
                 self.assertEqual(
                     expected, actual,
-                    "{}, expecting {}, got {}".format(input, expected, actual)) 
+                    "{}, expecting {}, got {}".format(input, expected, actual))
+
+    def test_to_str_seconds_keeps_full_precision(self):
+        # Regression test: to_str() used to format the seconds component
+        # with "%g", which only keeps 6 significant digits. Once the
+        # whole-second part reached two digits, that silently dropped
+        # microsecond precision (e.g. 54.709570s came out as "54.7096s"),
+        # so a subsequent from_str() no longer matched the original value.
+        delta = timedelta(hours=27, minutes=43, seconds=54, microseconds=709570)
+        formatted = durationpy.to_str(delta)
+        self.assertEqual("27h43m54.70957s", formatted)
+        self.assertEqual(delta, durationpy.from_str(formatted))
+
+    def test_to_str_from_str_roundtrip(self):
+        # A broader round trip sweep over durations whose seconds
+        # component has both a two-digit whole part and a sub-second
+        # fraction, which is exactly the shape that lost precision before.
+        samples = [
+            timedelta(seconds=36048, microseconds=256787),
+            timedelta(days=1, seconds=13434, microseconds=709570),
+            timedelta(seconds=10, microseconds=123456),
+            timedelta(seconds=-59, microseconds=-1),
+            timedelta(minutes=1, seconds=1, microseconds=1),
+        ]
+        for delta in samples:
+            formatted = durationpy.to_str(delta)
+            self.assertEqual(
+                delta, durationpy.from_str(formatted),
+                "roundtrip failed for {} -> {}".format(delta, formatted))
 
 if __name__ == '__main__':
     unittest.main()
