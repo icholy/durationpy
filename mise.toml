@@ -5,10 +5,6 @@ uv = "latest"
 [env]
 _.python.venv = { path = ".venv", create = true }
 
-[tasks.install]
-description = "Install development dependencies"
-run = "uv pip install -r requirements-dev.txt"
-
 [tasks.test]
 description = "Run the tests"
 run = "python test.py"
@@ -20,9 +16,9 @@ run = "rm -rf build dist *.egg-info"
 [tasks.build]
 description = "Build the sdist and wheel"
 depends = ["clean"]
-run = "python setup.py sdist bdist_wheel"
+run = "uv build"
 
 [tasks.publish]
 description = "Upload the distributions to PyPI"
 depends = ["build"]
-run = "twine upload dist/*"
+run = "uv publish"

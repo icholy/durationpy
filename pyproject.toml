@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "durationpy"
+version = "0.11"
+description = "Module for converting between datetime.timedelta and Go's Duration strings."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Ilia Choly", email = "ilia.choly@gmail.com" }]
+requires-python = ">=3.10"
+
+[project.urls]
+Homepage = "https://github.com/icholy/durationpy"
+
+[tool.setuptools]
+packages = ["durationpy"]
+
+[tool.setuptools.package-data]
+durationpy = ["py.typed", "*.pyi"]
