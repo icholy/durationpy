@@ -50,15 +50,16 @@ def from_str(duration):
             sign = -1
         duration = duration[1:]
 
-    matches = list(_duration_re.finditer(duration))
-    if not matches:
+    if not duration:
         raise DurationError("Invalid duration {}".format(original))
-    if matches[0].start() != 0 or matches[-1].end() != len(duration):
-        raise DurationError(
-            'Extra chars at start or end of duration {}'.format(original))
 
     total = 0
-    for match in matches:
+    pos = 0
+    while pos < len(duration):
+        match = _duration_re.match(duration, pos)
+        if not match:
+            raise DurationError("Invalid duration {}".format(original))
+        pos = match.end()
         value, unit = match.groups()
         if unit not in units:
             raise DurationError(

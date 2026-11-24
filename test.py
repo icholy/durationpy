@@ -73,6 +73,11 @@ cases = [
   ["X72h3m0.5msY", False, 0],
   ["+X3h", False, 0],
   ["-X3h", False, 0],
+  ["1h!2m", False, 0],
+  ["1h-2m", False, 0],
+  ["1h+2m", False, 0],
+  ["1h 2m", False, 0],
+  ["1hX2m3s", False, 0],
 
   # out of range: matches the grammar but overflows timedelta
   ["99999999999999999999ms", False, 0],
