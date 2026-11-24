@@ -101,6 +101,21 @@ cases = [
   ["-7d", True, -7*day]
 ]
 
+format_cases = [
+  [timedelta(), "0", "0"],
+  [timedelta(microseconds=492), "492us", "492us"],
+  [timedelta(seconds=5), "5s", "5s"],
+  [timedelta(days=7), "168h", "7d"],
+  [timedelta(hours=27, minutes=43, seconds=54, microseconds=709570), "27h43m54.70957s", "1d3h43m54.70957s"],
+
+  # large values with a sub-second part
+  [timedelta(days=195, hours=7, minutes=47, seconds=15, microseconds=527951), "4687h47m15.527951s", "6mm15d7h47m15.527951s"],
+  [timedelta(days=100000, seconds=54, microseconds=709570), "2400000h54.70957s", "273y11mm25d54.70957s"],
+  [timedelta(days=-100000, seconds=-54, microseconds=-709570), "-2400000h54.70957s", "-273y11mm25d54.70957s"],
+  [timedelta.max, "23999999999h59m59.999999s", "2739726y9d23h59m59.999999s"],
+  [timedelta.min, "-23999999976h", "-2739726y9d"],
+]
+
 class DurationTest(unittest.TestCase):
 
     def test_parser(self):
@@ -125,6 +140,11 @@ class DurationTest(unittest.TestCase):
                     self.assertEqual(
                         expected, actual,
                         "{}, expecting {}, got {}".format(input, expected, actual))
+
+    def test_formatter_output(self):
+        for [delta, expected, expected_extended] in format_cases:
+            self.assertEqual(expected, durationpy.to_str(delta))
+            self.assertEqual(expected_extended, durationpy.to_str(delta, extended=True))
 
 if __name__ == '__main__':
     unittest.main()
