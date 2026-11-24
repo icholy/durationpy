@@ -59,6 +59,13 @@ cases = [
   # Use multiplication to preserve rounding errors
   ["492us", True, timedelta(microseconds=492).total_seconds() * 1000],
   
+  # precision
+  ["10.123456s", True, timedelta(seconds=10, microseconds=123456).total_seconds() * 1000],
+  ["-59.000001s", True, timedelta(seconds=-59, microseconds=-1).total_seconds() * 1000],
+  ["1m1.000001s", True, timedelta(minutes=1, seconds=1, microseconds=1).total_seconds() * 1000],
+  ["10h48.256787s", True, timedelta(seconds=36048, microseconds=256787).total_seconds() * 1000],
+  ["27h43m54.70957s", True, timedelta(hours=27, minutes=43, seconds=54, microseconds=709570).total_seconds() * 1000],
+
   # errors
   ["", False, 0],
   ["3", False, 0],
