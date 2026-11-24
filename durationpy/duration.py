@@ -150,9 +150,12 @@ def _to_str_large(nanoseconds, extended):
         nanoseconds -= _minute_size * minutes
         result_str += "{:g}m".format(minutes)
 
-    seconds = float(nanoseconds) / float(_second_size)
-    if seconds:
-        nanoseconds -= _second_size * seconds
-        result_str += "{:g}s".format(seconds)
+    seconds = int(nanoseconds / _second_size)
+    nanoseconds = int(nanoseconds - _second_size * seconds)
+    if nanoseconds:
+        fraction = "{:09d}".format(nanoseconds).rstrip("0")
+        result_str += "{}.{}s".format(seconds, fraction)
+    elif seconds:
+        result_str += "{}s".format(seconds)
 
     return result_str
