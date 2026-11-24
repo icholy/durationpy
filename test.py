@@ -54,6 +54,9 @@ cases = [
   
   # large value
   ["52763797000ms", True, 52763797000 * millisecond],
+  ["1000000h", True, 1000000 * hour],
+  ["2400000h30m", True, 2400000*hour + 30*minute],
+  ["1000000y", True, 1000000 * year],
 
   # small value
   # Use multiplication to preserve rounding errors
@@ -116,11 +119,12 @@ class DurationTest(unittest.TestCase):
         for [input, passes, expected] in cases:
             if passes:
                 dt = durationpy.from_str(input)
-                ds = durationpy.to_str(dt)
-                actual = durationpy.from_str(ds).total_seconds() * 1000
-                self.assertEqual(
-                    expected, actual,
-                    "{}, expecting {}, got {}".format(input, expected, actual)) 
+                for extended in [False, True]:
+                    ds = durationpy.to_str(dt, extended=extended)
+                    actual = durationpy.from_str(ds).total_seconds() * 1000
+                    self.assertEqual(
+                        expected, actual,
+                        "{}, expecting {}, got {}".format(input, expected, actual))
 
 if __name__ == '__main__':
     unittest.main()

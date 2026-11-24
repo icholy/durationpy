@@ -128,27 +128,27 @@ def _to_str_large(nanoseconds, extended):
         years = int(nanoseconds / _year_size)
         if years:
             nanoseconds -= _year_size * years
-            result_str += "{:g}y".format(years)
+            result_str += "{}y".format(years)
 
         months = int(nanoseconds / _month_size)
         if months:
             nanoseconds -= _month_size * months
-            result_str += "{:g}mm".format(months)
+            result_str += "{}mm".format(months)
 
         days = int(nanoseconds / _day_size)
         if days:
             nanoseconds -= _day_size * days
-            result_str += "{:g}d".format(days)
+            result_str += "{}d".format(days)
 
     hours = int(nanoseconds / _hour_size)
     if hours:
         nanoseconds -= _hour_size * hours
-        result_str += "{:g}h".format(hours)
+        result_str += "{}h".format(hours)
 
     minutes = int(nanoseconds / _minute_size)
     if minutes:
         nanoseconds -= _minute_size * minutes
-        result_str += "{:g}m".format(minutes)
+        result_str += "{}m".format(minutes)
 
     seconds = int(nanoseconds / _second_size)
     nanoseconds = int(nanoseconds - _second_size * seconds)
