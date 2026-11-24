@@ -84,11 +84,11 @@ def from_str(duration):
 def to_str(delta, extended=False):
     """Format a datetime.timedelta to a duration string"""
 
-    total_seconds = delta.total_seconds()
-    sign = "-" if total_seconds < 0 else ""
-    nanoseconds = round(abs(total_seconds * _second_size), 0)
+    microseconds = delta // datetime.timedelta(microseconds=1)
+    sign = "-" if microseconds < 0 else ""
+    nanoseconds = abs(microseconds) * _microsecond_size
 
-    if abs(total_seconds) < 1:
+    if nanoseconds < _second_size:
         result_str = _to_str_small(nanoseconds, extended)
     else:
         result_str = _to_str_large(nanoseconds, extended)
@@ -103,12 +103,12 @@ def _to_str_small(nanoseconds, extended):
     if not nanoseconds:
         return "0"
 
-    milliseconds = int(nanoseconds / _millisecond_size)
+    milliseconds = nanoseconds // _millisecond_size
     if milliseconds:
         nanoseconds -= _millisecond_size * milliseconds
         result_str += "{:g}ms".format(milliseconds)
 
-    microseconds = int(nanoseconds / _microsecond_size)
+    microseconds = nanoseconds // _microsecond_size
     if microseconds:
         nanoseconds -= _microsecond_size * microseconds
         result_str += "{:g}us".format(microseconds)
@@ -125,33 +125,33 @@ def _to_str_large(nanoseconds, extended):
 
     if extended:
 
-        years = int(nanoseconds / _year_size)
+        years = nanoseconds // _year_size
         if years:
             nanoseconds -= _year_size * years
             result_str += "{}y".format(years)
 
-        months = int(nanoseconds / _month_size)
+        months = nanoseconds // _month_size
         if months:
             nanoseconds -= _month_size * months
             result_str += "{}mm".format(months)
 
-        days = int(nanoseconds / _day_size)
+        days = nanoseconds // _day_size
         if days:
             nanoseconds -= _day_size * days
             result_str += "{}d".format(days)
 
-    hours = int(nanoseconds / _hour_size)
+    hours = nanoseconds // _hour_size
     if hours:
         nanoseconds -= _hour_size * hours
         result_str += "{}h".format(hours)
 
-    minutes = int(nanoseconds / _minute_size)
+    minutes = nanoseconds // _minute_size
     if minutes:
         nanoseconds -= _minute_size * minutes
         result_str += "{}m".format(minutes)
 
-    seconds = int(nanoseconds / _second_size)
-    nanoseconds = int(nanoseconds - _second_size * seconds)
+    seconds = nanoseconds // _second_size
+    nanoseconds -= _second_size * seconds
     if nanoseconds:
         fraction = "{:09d}".format(nanoseconds).rstrip("0")
         result_str += "{}.{}s".format(seconds, fraction)
